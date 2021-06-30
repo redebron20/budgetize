@@ -1,9 +1,9 @@
 class Budget{
 
     static all = []
-    static cashflowContainer = document.getElementById("cashflow-container")
+    static budgetsContainer = document.getElementById("budgets-container")
 
-    constructor(id, name, income, expense, balance, user_id){
+    constructor({id, name, income, expense, balance, user_id}){
         this.id = id
         this.name = name
         this.income = income
@@ -18,7 +18,7 @@ class Budget{
         Budget.all.push(this)
     }
 
-    cashflowHTML(){
+    budgetHTML(){
         this.element.innerHTML += `
             <div>
                 <h3>${this.name}</h3>
@@ -28,7 +28,7 @@ class Budget{
     }
 
     appendOnDOM(){
-        Budget.cashflowContainer.appendChild(cashflowHTML())
+        Budget.budgetsContainer.appendChild(this.budgetHTML())
     }
 
 }

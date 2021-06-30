@@ -7,7 +7,10 @@ class BudgetService{
         fetch(`${this.endpoint}/budgets`)
         .then(resp => resp.json())
         .then(budgets => {
-            debugger
+            for (const budget of budgets){
+                const b = new Budget(budget)
+                b.appendOnDOM()
+            }
         })
     }
 }
