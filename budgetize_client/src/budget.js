@@ -2,6 +2,7 @@ class Budget{
 
     static all = []
     static budgetsContainer = document.getElementById("budgets-container")
+    static budgetForm = document.getElementById("budget-form-container")
 
     constructor({id, name, income, expense, balance, user_id}){
         this.id = id
@@ -29,6 +30,15 @@ class Budget{
 
     appendOnDOM(){
         Budget.budgetsContainer.appendChild(this.budgetHTML())
+    }
+
+    static renderForm(){
+        Budget.budgetForm.innerHTML += `
+        <form id="new-budget-form">
+            Create Budget: <input type="text" id="budget-name">
+            <input type="submit" id="create">
+        </form>
+        `
     }
 
 }
