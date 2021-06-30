@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Budgetize</title>
+        <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="app">
+            <h1>Budgetize</h1>
+
+            <div class="balance-container">
+                <h2>Balance</h2>
+                <div id="balance">$1500</div>
+            </div>
+
+            <div class="cashflow-container">
+                <div class="income-container">
+                    <h2>Income</h2>
+                    <div id="income">$4000</div>
+                </div>
+                <div class="expense-container">
+                    <h2>Expense</h2>
+                    <div id="expense">$2500</div>
+                </div>
+            </div>
+
+            <div class="transaction-container">
+                <h2>Transactions</h2>
+                <ul id="transaction">
+                    
+                </ul>
+            </div>
+
+            <div class="form-container">
+                <h2>Add new transaction</h2>
+                <form onsubmit="return false;">
+                    <label for="name">Name</label>
+                    <input id="name" type="text">
+                    <label for="amount">Amount</label>
+                    <input id="amount" type="number">
+                    <button id="incomeBtn">Add Income</button>
+                    <button id="expenseBtn">Add Expense</button>
+                </form>
+            </div>
+        </div>
+
+        <script src="src/user.js"></script>
+        <script src="src/userService.js"></script>
+        <script src="src/budget.js"></script>
+        <script src="src/budgetService.js"></script>
+        <script src="index.js"></script>
+    </body>
+</html>
