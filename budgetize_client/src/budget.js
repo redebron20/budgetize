@@ -12,9 +12,10 @@ class Budget{
         this.balance = balance
         this.user_id = user_id
 
-        this.element = document.createElement('li')
+        this.element = document.createElement("li")
         this.element.dataset.id = this.id
         this.element.id = `budget-${this.id}`
+        this.element.addEventListener('click', this.handleClick)
 
         Budget.all.push(this)
     }
@@ -24,6 +25,7 @@ class Budget{
             <div>
                 <h3>${this.name}</h3>
             </div>
+            <button id="delete-bttn">Delete</button>
         `
         return this.element
     }
@@ -35,10 +37,17 @@ class Budget{
     static renderForm(){
         Budget.budgetForm.innerHTML += `
         <form id="new-budget-form">
-            Create Budget: <input type="text" id="budget-name">
+            Create Budget: <input type="text" id="name">
             <input type="submit" id="create">
         </form>
         `
+    }
+
+    handleClick = () => {
+        if (event.target.innerText === 'Delete'){
+            this.element.remove()
+            budgetService.deleteBudget(this.id)
+        }
     }
 
 }
