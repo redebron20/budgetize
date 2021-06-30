@@ -5,3 +5,12 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+user = User.create(username: "test2, email: "test2@awesome.com")
+
+budgets = Budget.create([
+    {name: "Summer Vacation"},
+    {name: "Holiday"},
+    {name: "August 2021"}
+])
+
+user.budgets << budgets 
