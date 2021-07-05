@@ -11,7 +11,7 @@ loginForm.addEventListener("submit", (e) => loginFormHandler(e))
 User.renderLoginForm()
 User.renderSignupForm()
 
-
+ 
 
 Budget.budgetForm.addEventListener('submit', handleSubmit)
 
