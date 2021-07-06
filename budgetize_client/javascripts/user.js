@@ -100,7 +100,7 @@ function renderSignUpForm() {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
-            body: JSON.stringify({ email: input[0].value, username: input[1].value, password: input[2].value })
+            body: JSON.stringify({ email: input[0].value, password: input[1].value, password: input[2].value })
         }
 
         if (input[0].value !== "") { 

@@ -1,21 +1,21 @@
-class BudgetService{
+class ExpenseService{
     constructor(endpoint){
         this.endpoint = endpoint
     }
 
-    getBudgets(){
-        fetch(`${this.endpoint}/budgets`)
+    getExpenses(){
+        fetch(`${this.endpoint}/expenses`)
         .then(resp => resp.json())
-        .then(budgets => {
-            for (const budget of budgets){
-                const b = new Budget(budget)
+        .then(expenses => {
+            for (const expense of expenses){
+                const b = new Expense(expense)
                 b.appendOnDOM()
             }
         })
     }
 
-    createBudget(){
-        const budget = {
+    createExpense(){
+        const expense = {
             title: document.getElementById('title').value,
             user_id: 1
         }
@@ -25,19 +25,19 @@ class BudgetService{
             headers: {
                 'Content-Type': 'application/json'
             },
-            body:JSON.stringify(budget)
+            body:JSON.stringify(expense)
         }
         
-        fetch(`${this.endpoint}/budgets`, configObj)
+        fetch(`${this.endpoint}/expenses`, configObj)
         .then(resp => resp.json())
-        .then(budget => {
-            const b = new Budget(budget)
+        .then(expense => {
+            const b = new Expense(expense)
                 b.appendOnDOM()
         })
     }
 
-    deleteBudget(id){
-        fetch(`${this.endpoint}/budgets/${id}`, {
+    deleteexpense(id){
+        fetch(`${this.endpoint}/expenses/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

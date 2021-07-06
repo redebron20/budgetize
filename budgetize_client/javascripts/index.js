@@ -17,8 +17,8 @@ class UI {
     }
 
     submitBudgetForm(){
-        const value = this.budgetInput.value;
-        if(value==='' || value <0){
+        const budgetAmount = this.budgetInput.value;
+        if(budgetAmount ==='' || budgetAmount < 0){
             this.budgetFeedback.classList.add('showItem')
             this.budgetFeedback.innerHTML = `<p>value cannot be negative or empty</p>`;
             const self = this;
@@ -27,7 +27,7 @@ class UI {
             }, 5000);
         }
         else{
-            this.budgetAmount.textContent = value;
+            this.budgetAmount.textContent = budgetAmount;
             this.budgetInput.value = '';
             this.showBalance();
         }
@@ -71,7 +71,7 @@ class UI {
 
             let expense = {
                 id:this.itemID,
-                name:expenseValue,
+                title:expenseValue,
                 amount:amount,
             }
             this.itemID++;
@@ -86,7 +86,7 @@ class UI {
         div.classList.add('expense');
         div.innerHTML = `
             <div class="expense-item d-flex justify-content-between align-items-baseline">
-                <h6 class="expense-title mb-0 text-uppercase list-item">- ${expense.name}</h6>
+                <h6 class="expense-title mb-0 text-uppercase list-item">- ${expense.title}</h6>
                 <h5 class="expense-amount mb-0 list-item">${expense.amount}</h5>
                 <div class="expense-icons list-item">
                 <a href="#" class="edit-icon mx-2" data-id="${expense.id}">
@@ -112,6 +112,7 @@ class UI {
         this.expenseAmount.textContent = total;
         return total;
     }
+
     editExpense(element){
         let id = parseInt(element.dataset.id);
         let parent = element.parentElement.parentElement.parentElement;
@@ -119,14 +120,13 @@ class UI {
         let expense = this.itemList.filter(function(item){
             return item.id === id;
         })
-        this.expenseInput.value = expense[0].name;
+        this.expenseInput.value = expense[0].title;
         this.amountInput.value = expense[0].amount;
         let tempList = this.itemList.filter(function(item){
             return item.id !== id;
         })
         this.itemList = tempList;
         this.showBalance()
-
     }
 
     deleteExpense(element){
@@ -171,8 +171,6 @@ function addEventListeners(){
             ui.deleteExpense(event.target.parentElement)
         }
     });
-
-
 }
 
 document.addEventListener('DOMContentLoaded', () =>{
@@ -180,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () =>{
     renderLogInForm();
     addEventListeners();
     // budgetService.getBudgets()
-    // Budget.renderForm()
+    // Budget.addBudget()
 
 })
 

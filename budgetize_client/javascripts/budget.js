@@ -5,9 +5,9 @@ class Budget{
     static budgetForm = document.getElementById("budget-form")
     static budgetFeedback = document.querySelector(".budget-feedback")
 
-    constructor({id, name, income, expense, balance, user_id}){
+    constructor({id, title, income, expense, balance, user_id}){
         this.id = id
-        this.name = name
+        this.title = title
         this.income = income
         this.expense = expense
         this.balance = balance
@@ -24,7 +24,7 @@ class Budget{
     budgetHTML(){
         this.element.innerHTML += `
             <div>
-                <h3>${this.name}</h3>
+                <h3>${this.title}</h3>
             </div>
             <button id="edit-bttn">Edit</button>
             <button id="delete-bttn">Delete</button>
@@ -36,17 +36,19 @@ class Budget{
         Budget.budgetsContainer.appendChild(this.budgetHTML())
     }
 
-    static renderForm(){
+    static addBudget(){
         Budget.budgetForm.innerHTML += `
         <form id="budget-form" class=" budget-form">
-                 <h5 class="text-capitalize">create new budget</h5>
-                 <div class="form-group">
-                    Name: <input type="text" class="form-control budget-input" id="name">
-                    Amount: <input type="number" class="form-control budget-input" id="budget-input">
-                 </div>
-                 <!-- submit button -->
-                 <button type="submit" class="btn text-capitalize budget-submit" id="budget-submit">create</button>
-            </form>
+                    <h5 class="text-capitalize">enter your budget</h5>
+                    <div class="form-group">
+                        Title:<input type="text" class="form-control budget-title" id="budget-title">
+                       </div>
+                    <div class="form-group">
+                        Amount:<input type="number" class="form-control budget-input" id="budget-input">
+                    </div>
+                    <!-- submit button -->
+                    <button type="submit" class="btn text-capitalize budget-submit" id="budget-submit">calculate</button>
+        </form>
         `
     }
 
