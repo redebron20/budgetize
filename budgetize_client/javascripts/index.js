@@ -66,8 +66,8 @@ class UI {
         }
         else{
             let amount = parseInt(amountValue);
-            this.expenseInput = ''
-            this.amountInput = ''
+            this.expenseInput.value = '';
+            this.amountInput.value = '';
 
             let expense = {
                 id:this.itemID,
@@ -75,9 +75,9 @@ class UI {
                 amount:amount,
             }
             this.itemID++;
-            this.itemList.push(expense)
-            this.addExpense(expense)
-            //show balance
+            this.itemList.push(expense);
+            this.addExpense(expense);
+            this.showBalance();
         }
     }
 
@@ -102,8 +102,42 @@ class UI {
     }
 
     totalExpense(){
-        let total = 400;
-        return total
+        let total = 0;
+        if(this.itemList.length>0){
+            total = this.itemList.reduce(function(accumulator,current){
+                accumulator += current.amount;
+                return accumulator;
+            },0);
+        }
+        this.expenseAmount.textContent = total;
+        return total;
+    }
+    editExpense(element){
+        let id = parseInt(element.dataset.id);
+        let parent = element.parentElement.parentElement.parentElement;
+        this.expenseList.removeChild(parent);
+        let expense = this.itemList.filter(function(item){
+            return item.id === id;
+        })
+        this.expenseInput.value = expense[0].name;
+        this.amountInput.value = expense[0].amount;
+        let tempList = this.itemList.filter(function(item){
+            return item.id !== id;
+        })
+        this.itemList = tempList;
+        this.showBalance()
+
+    }
+
+    deleteExpense(element){
+        let id = parseInt(element.dataset.id)
+        let parent = element.parentElement.parentElement.parentElement;
+        this.expenseList.removeChild(parent);
+        let tempList = this.itemList.filter(function(item){
+            return item.id !== id;
+        })
+        this.itemList = tempList;
+        this.showBalance()
     }
   }
 
@@ -130,7 +164,12 @@ function addEventListeners(){
     });
 
     expenseList.addEventListener('click', function(event){
-
+        if(event.target.parentElement.classList.contains('edit-icon')){
+            ui.editExpense(event.target.parentElement)
+        }
+        else if(event.target.parentElement.classList.contains('delete-icon')){
+            ui.deleteExpense(event.target.parentElement)
+        }
     });
 
 
@@ -138,8 +177,8 @@ function addEventListeners(){
 
 document.addEventListener('DOMContentLoaded', () =>{
     console.log("DOM HAS LOADED!!!");
+    renderLogInForm();
     addEventListeners();
-    renderLogInForm()
     // budgetService.getBudgets()
     // Budget.renderForm()
 
