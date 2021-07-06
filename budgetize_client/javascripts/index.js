@@ -1,26 +1,23 @@
+class UI {
+    constructor() {
+      this.budgetFeedback = document.querySelector(".budget-feedback");
+      this.expenseFeedback = document.querySelector(".expense-feedback");
+      this.budgetForm = document.getElementById("budget-form");
+      this.budgetInput = document.getElementById("budget-input");
+      this.budgetAmount = document.getElementById("budget-amount");
+      this.expenseAmount = document.getElementById("expense-amount");
+      this.balance = document.getElementById("balance");
+      this.balanceAmount = document.getElementById("balance-amount");
+      this.expenseForm = document.getElementById("expense-form");
+      this.expenseInput = document.getElementById("expense-input");
+      this.amountInput = document.getElementById("amount-input");
+      this.expenseList = document.getElementById("expense-list");
+      this.itemList = [];
+      this.itemID = 0;
+    }
+  }
+
 document.addEventListener('DOMContentLoaded', () =>{
     console.log("DOM HAS LOADED!!!");
-
-const base_url = "http://127.0.0.1:3000"
-// const userService = new userService(base_url)
-const budgetService = new BudgetService(base_url)
-
-
-UserService.loginUser()
-UserService.createUser()
-
- 
-
-Budget.budgetForm.addEventListener('submit', handleSubmit)
-
-budgetService.getBudgets()
-Budget.renderForm()
-
-function handleSubmit(event){
-    event.preventDefault()
-    budgetService.createBudget()
-    event.target.reset()
-}
-
-
+    renderLogInForm()
 })
