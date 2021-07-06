@@ -14,7 +14,7 @@ ActiveRecord::Schema.define(version: 2021_06_30_151422) do
 
   create_table "budgets", force: :cascade do |t|
     t.string "name"
-    t.float "income", default: 0.0
+    t.float "amount", default: 0.0
     t.float "expense", default: 0.0
     t.float "balance", default: 0.0
     t.integer "user_id"
@@ -24,7 +24,6 @@ ActiveRecord::Schema.define(version: 2021_06_30_151422) do
 
   create_table "transactions", force: :cascade do |t|
     t.string "name"
-    t.string "kind"
     t.float "amount"
     t.integer "budget_id"
     t.datetime "created_at", precision: 6, null: false
