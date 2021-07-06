@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-    has_many :budgets
+    has_one :budget
 
     validates :email, presence: true, uniqueness: true
     validates :username, presence: true, uniqueness: true
