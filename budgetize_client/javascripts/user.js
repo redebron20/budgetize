@@ -40,10 +40,8 @@ class User{
 
         if (input[0].value !== "") { 
             fetch('http://localhost:3000/login', configObj)
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(object) {
+            .then(response => response.json())
+            .then(object => {
                 if (object.errors) {
                     let p = document.createElement('p')
                     p.innerText = object.errors
@@ -102,10 +100,8 @@ class User{
 
         if (input[0].value !== "") { 
             fetch('http://localhost:3000/users', configObj)
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(object) {
+            .then(response => response.json())
+            .then(object => {
                 if (object.errors) {
                     let ul = document.createElement('ul');
                     object.errors.map( (error) => { 
@@ -120,7 +116,7 @@ class User{
                     User.renderLoggedInPage();
                 }
             })
-            .catch(function(error) {
+            .catch(error => {
                 container.insertAdjacentHTML('beforebegin', `<p>Something went wrong. Please try again</p>`)
             })
         }
@@ -134,9 +130,16 @@ class User{
     }
 
     static renderLoggedInPage(){
+        console.log(localStorage.getItem('loggedIn'));
         let container = document.getElementsByClassName('container')[0];
         container.innerHTML = '',
-        console.log(`Welcome Back, user!`)
+        User.header();
+
+        fetch(`http://localhost:3000/users/${loggedIn.id}/budgets`) 
+        .then(resp => resp.json())
+        .then(object => {
+                listBudgets(object);
+        })
 
     }
 
@@ -144,6 +147,44 @@ class User{
         container.innerHTML = '';
         createSignInForm();
         header.style.visibility = 'hidden';
+    }
+
+    static header(){
+        console.log('you are inside header')
+        debugger
+        let create = document.getElementsByClassName('create-budget');
+        create = Array.from(create);
+        let createBudgetDiv = create.find(node => node.nodeName === 'DIV')
+        if (createBudgetDiv) {
+            createBudgetDiv.innerHTML = '';
+        } else {
+            createBudgetDiv = document.createElement('div');
+            createBudgetDiv.setAttribute('class', 'create-budget');
+            createBudgetDiv.setAttribute('data-color', currentColor);
+        }
+        let divOne = document.createElement('div');
+        divOne.setAttribute('class', 'create-and-sort');
+        let addBudget = document.createElement('button');
+        addBudget.setAttribute('class', 'create-budget button');
+        addBudget.innerText = 'Create Budget';
+        addBudget.addEventListener('click', function(event) {
+            addBudget.style.display = 'none';
+            renderBudgetForm();
+        })
+        let divTwo = document.createElement('div');
+        let logOut = document.createElement('button');
+        logOut.setAttribute('class', 'logout button');
+        logOut.innerText = 'Log Out';
+        logOut.addEventListener('click', function(event) {
+            event.preventDefault();
+            renderLoggedOutPage();
+            loggedIn = null;
+        })
+        divOne.appendChild(addBudget);
+        divTwo.appendChild(logOut);
+        createBudgetDiv.appendChild(divOne);
+        createBudgetDiv.appendChild(divTwo);
+        container.prepend(createBudgetDiv);
     }
 }      
         

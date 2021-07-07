@@ -3,6 +3,7 @@ class UI {
       this.budgetFeedback = document.querySelector(".budget-feedback");
       this.expenseFeedback = document.querySelector(".expense-feedback");
       this.budgetForm = document.getElementById("budget-form");
+      //this.budgetTitle = document.getElementById("budget-title");
       this.budgetInput = document.getElementById("budget-input");
       this.budgetAmount = document.getElementById("budget-amount");
       this.expenseAmount = document.getElementById("expense-amount");
@@ -28,6 +29,7 @@ class UI {
         }
         else{
             this.budgetAmount.textContent = budgetAmount;
+            //this.budgetTitle.value = '';
             this.budgetInput.value = '';
             this.showBalance();
         }
