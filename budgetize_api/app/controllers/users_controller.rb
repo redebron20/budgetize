@@ -24,6 +24,11 @@ class UsersController < ApplicationController
     end
   end
 
+  def login
+    @user = User.find_by(email: params[email])
+
+  end
+
   # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
@@ -47,6 +52,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:email, :username, :password)
+      params.permit(:email, :username, :password)
     end
 end

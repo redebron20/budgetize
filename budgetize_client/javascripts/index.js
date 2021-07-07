@@ -175,7 +175,7 @@ function addEventListeners(){
 
 document.addEventListener('DOMContentLoaded', () =>{
     console.log("DOM HAS LOADED!!!");
-    renderLogInForm();
+    User.renderLogInForm();
     addEventListeners();
     // budgetService.getBudgets()
     // Budget.addBudget()

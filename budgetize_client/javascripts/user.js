@@ -5,11 +5,10 @@ class User{
         this.username = username
         this.email = email
     }
-}
 
-let container = document.getElementsByClassName('container')[0];
+static renderLogInForm() {
+    let container = document.getElementsByClassName('container')[0];
 
-function renderLogInForm() {
     container.innerHTML += `
     <div class="log-in">
         <form class="login-form">
@@ -53,7 +52,7 @@ function renderLogInForm() {
                 } else {
                     loggedIn = object; 
                     localStorage.loggedIn = object.id;
-                    renderLoggedInPage();
+                    // renderLoggedInPage();
                 }
             })
             .catch(function(error) {
@@ -65,12 +64,13 @@ function renderLogInForm() {
     signUp.addEventListener('click', function(event) {
         event.preventDefault();
         container.innerHTML = '';
-        renderSignUpForm();
+        User.renderSignUpForm();
     })
         
 }
 
-function renderSignUpForm() {
+static renderSignUpForm() {
+    let container = document.getElementsByClassName('container')[0];
     container.insertAdjacentHTML('afterbegin', `
         <div class="sign-up">
             <form id="signup-form">
@@ -100,7 +100,7 @@ function renderSignUpForm() {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
-            body: JSON.stringify({ email: input[0].value, password: input[1].value, password: input[2].value })
+            body: JSON.stringify({ email: input[0].value, username: input[1].value, password: input[2].value })
         }
 
         if (input[0].value !== "") { 
@@ -109,6 +109,7 @@ function renderSignUpForm() {
                 return response.json();
             })
             .then(function(object) {
+                debugger
                 if (object.errors) {
                     let ul = document.createElement('ul');
                     object.errors.map( (error) => { 
@@ -120,7 +121,7 @@ function renderSignUpForm() {
                 } else {
                     loggedIn = object; 
                     localStorage.loggedIn = object.id;
-                    renderLoggedInPage();
+                    // renderLoggedInPage();
                 }
             })
             .catch(function(error) {
@@ -132,8 +133,8 @@ function renderSignUpForm() {
     logIn.addEventListener('click', function(event) {
         event.preventDefault();
         container.innerHTML = '';
-        renderLogInForm();
+        User.renderLogInForm();
     })
 }
-      
+}      
         
