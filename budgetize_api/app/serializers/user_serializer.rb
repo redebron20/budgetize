@@ -1,6 +1,8 @@
 class UserSerializer < ActiveModel::Serializer
 
-    attributes :id, :email, :budget, :expenses
+    attributes :id, :email
+    
+    # , :budget, :expense
 
 end
 

@@ -29,38 +29,23 @@ class User{
 
     logIn.addEventListener('submit', function(event) {
         event.preventDefault();
-        let configObj = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({ email: input[0].value, password: input[1].value })
-        }
 
-        if (input[0].value !== "") { 
-            fetch('http://localhost:3000/login', configObj)
-            .then(response => response.json())
-            .then(object => {
-                if (object.errors) {
-                    let p = document.createElement('p')
-                    p.innerText = object.errors
-                    logIn.prepend(p);
-                } else {
-                    
-                    localStorage.setItem('loggedIn', object.id)
-                    const user = new User(object)
-                    const budget = new Budget(object.budget)
-                    object.expenses.forEach(expense => {
-                        new Expense(expense)
-                    })
-                    // User.renderLoggedInPage();
-                }
-            })
-            .catch(function(error) {
-                container.insertAdjacentHTML('beforebegin', `<p>Something went wrong. Please try again</p>`)
-            })
+        const bodyData = {user: {
+            email: input[0].value, 
+            password: input[1].value
+            }
         }
+          
+            fetch("http://localhost:3000/login", {
+              method: "POST",
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify(bodyData)
+            })
+            .then(response => response.json())
+            .then(json => {
+                localStorage.setItem('jwt_token', json.jwt)
+                User.renderUserProfile()
+            })
     })
 
     signUp.addEventListener('click', function(event) {
@@ -94,37 +79,25 @@ class User{
 
     signUp.addEventListener('submit', function(event) {
         event.preventDefault();
-        let configObj = {
+        let user = {
+            email: input[0].value, 
+            password: input[1].value
+          }
+
+        fetch('http://localhost:3000/users', {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email: input[0].value, password: input[1].value })
-        }
-
-        if (input[0].value !== "") { 
-            fetch('http://localhost:3000/users', configObj)
-            .then(response => response.json())
-            .then(object => {
-                if (object.errors) {
-                    let ul = document.createElement('ul');
-                    object.errors.map( (error) => { 
-                        let li = document.createElement('li');
-                        li.innerText = error;
-                        ul.appendChild(li);
-                    })
-                    signUp.prepend(ul);
-                } else {
-                    loggedIn = object; 
-                    localStorage.loggedIn = object.id;
-                    User.renderLoggedInPage();
-                }
-            })
-            .catch(error => {
-                container.insertAdjacentHTML('beforebegin', `<p>Something went wrong. Please try again</p>`)
-            })
-        }
+            body: JSON.stringify(user)
+          })
+          .then(resp => resp.json())
+          .then(user => {
+            new User(user.id, user.email, user.password)
+            
+        })
+        
     })
 
         logIn.addEventListener('click', function(event) {
@@ -133,6 +106,36 @@ class User{
             User.renderLogInForm();
         })
     }
+
+    static renderUserProfile() {
+        console.log('Welcome Back, User!')
+        console.log(localStorage.getItem('jwt_token'));
+        fetch('http://localhost:3000/profile', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('jwt_token')}`
+          }
+        })
+        .then(response => response.json())
+        .then(json => {
+            let user = new User(json.user.id, json.user.email)
+            let container = document.getElementsByClassName('container')[0];
+         
+  
+            let card = document.createElement('div')
+            card.setAttribute("id", `user-id-${user.id}`)
+            container.appendChild(card)
+        
+            let h1 = document.createElement('h1')
+            h1.setAttribute("style", "text-shadow: 2px 2px #00000044")
+            h1.innerText = `Welcome back!`
+            card.appendChild(h1)
+    
+            let logIn = document.getElementsByClassName('log-in')[0];
+            logIn.remove()
+          
+          })
+        }
 
     static renderLoggedInPage(){
 

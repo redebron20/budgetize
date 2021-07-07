@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+
+  skip_before_action :authorized, only: [:create]
 
   # GET /users
   def index
@@ -8,30 +9,27 @@ class UsersController < ApplicationController
     render json: @users
   end
 
-  # GET /users/1
-  def show
-    render json: @user
+  def profile
+    # using current_user helper in ApplicationController
+    render json: { user: UserSerializer.new(current_user) }, status: :accepted
   end
-
-  # POST /users
+  
   def create
-    @user = User.new(:email => params[:email], :password => params[:password])
-
-    if @user.save
-      render json: @user, status: :created, location: @user
+    @user = User.create(user_params)
+    if @user.valid?
+      # passing  encode_token a payload of user id
+      @token = encode_token(user_id: @user.id)
+      # byebug
+      # using built-in rails status codes
+      render json: { user: UserSerializer.new(@user), jwt: @token }, status: :created
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: { error: 'failed to create user' }, status: :not_acceptable
     end
   end
+    
+    private
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
     def user_params
-      params.permit(:email, :password)
+      params.require(:user).permit(:email, :password)
     end
 end
