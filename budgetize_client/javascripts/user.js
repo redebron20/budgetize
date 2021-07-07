@@ -133,32 +133,25 @@ class User{
     
             let logIn = document.getElementsByClassName('log-in')[0];
             logIn.remove()
-          
+
+            let logOut = document.createElement('button');
+            logOut.setAttribute('class', 'logout button');
+            logOut.innerText = 'Log Out';
+            logOut.addEventListener('click', function(event) {
+                event.preventDefault();
+                User.renderLoggedOutPage();
+
+            })
+            container.appendChild(logOut)
+         
           })
         }
 
-    static renderLoggedInPage(){
-
+    static renderLoggedOutPage() {
         let container = document.getElementsByClassName('container')[0];
-        container.innerHTML = ''
-
-        // fetch(`http://localhost:3000/users/${loggedIn.id}/budgets`, configObj)
-        // .then(resp => resp.json())
-        // .then(object => {
-        //     debugger
-        // })
-        
-        // budgetService.getBudgets()
-        // Budget.addBudget()
-
+        container.innerHTML = '';
+        User.renderLogInForm();
     }
-
-    // static renderLoggedOutPage() {
-    //     container.innerHTML = '';
-    //     createSignInForm();
-    //     header.style.visibility = 'hidden';
-    // }
-
 
 }      
         
