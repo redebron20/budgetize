@@ -1,4 +1,4 @@
-class UI {
+class App {
     constructor() {
       this.budgetFeedback = document.querySelector(".budget-feedback");
       this.expenseFeedback = document.querySelector(".expense-feedback");
@@ -16,9 +16,25 @@ class UI {
       this.itemList = [];
       this.itemID = 0;
     }
-
+    
     submitBudgetForm(){
         const budgetAmount = this.budgetInput.value;
+
+        const configObj = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify(budgetAmount)
+        }
+        
+        fetch(`http://localhost:3000/users/${loggedIn.id}/budgets`, configObj)
+        .then(resp => resp.json())
+        .then(budget => {
+            // const b = new Budget(budget)
+            //     b.appendOnDOM()
+        })
+
         if(budgetAmount ==='' || budgetAmount < 0){
             this.budgetFeedback.classList.add('showItem')
             this.budgetFeedback.innerHTML = `<p>value cannot be negative or empty</p>`;
@@ -37,18 +53,18 @@ class UI {
 
     showBalance(){
         const expense = this.totalExpense();
-        const total = parseInt(this.budgetAmount.textContent) - expense;
-        this.balanceAmount.textContent = total;
-        if(total < 0){
+        const balanceTotal = parseInt(this.budgetAmount.textContent) - expense;
+        this.balanceAmount.textContent = balanceTotal;
+        if(balanceTotal < 0){
             this.balance.classList.remove('showGreen', 'showBlack');
             this.balance.classList.add('showRed');
         }
-        else if(total > 0){
+        else if(balanceTotal > 0){
             this.balance.classList.remove('showRed', 'showBlack');
             this.balance.classList.add('showGreen');
         }
 
-        else if(total === 0){
+        else if(balanceTotal === 0){
             this.balance.classList.remove('showRed', 'showGreen');
             this.balance.classList.add('showBlack')
         }
@@ -143,34 +159,31 @@ class UI {
     }
   }
 
-const base_url = "http://127.0.0.1:3000"
-const budgetService = new BudgetService(base_url)
-
 function addEventListeners(){
     const budgetForm = document.getElementById('budget-form')
     const expenseForm = document.getElementById('expense-form')
     const expenseList = document.getElementById('expense-list')
 
-    const ui = new UI()
+    const app = new App()
 
     budgetForm.addEventListener('submit', function(event){
         event.preventDefault();
-        ui.submitBudgetForm();
+        app.submitBudgetForm();
 
     });
 
     expenseForm.addEventListener('submit', function(event){
         event.preventDefault();
-        ui.submitExpenseForm();
+        app.submitExpenseForm();
 
     });
 
     expenseList.addEventListener('click', function(event){
         if(event.target.parentElement.classList.contains('edit-icon')){
-            ui.editExpense(event.target.parentElement)
+            app.editExpense(event.target.parentElement)
         }
         else if(event.target.parentElement.classList.contains('delete-icon')){
-            ui.deleteExpense(event.target.parentElement)
+            app.deleteExpense(event.target.parentElement)
         }
     });
 }
@@ -179,8 +192,8 @@ document.addEventListener('DOMContentLoaded', () =>{
     console.log("DOM HAS LOADED!!!");
     User.renderLogInForm();
     addEventListeners();
-    // budgetService.getBudgets()
-    // Budget.addBudget()
-
 })
+
+const base_url = "http://127.0.0.1:3000"
+const budgetService = new BudgetService(base_url)
 

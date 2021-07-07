@@ -47,9 +47,14 @@ class User{
                     p.innerText = object.errors
                     logIn.prepend(p);
                 } else {
-                    loggedIn = object; 
-                    localStorage.loggedIn = object.id;
-                    User.renderLoggedInPage();
+                    
+                    localStorage.setItem('loggedIn', object.id)
+                    const user = new User(object)
+                    const budget = new Budget(object.budget)
+                    object.expenses.forEach(expense => {
+                        new Expense(expense)
+                    })
+                    // User.renderLoggedInPage();
                 }
             })
             .catch(function(error) {
@@ -130,61 +135,27 @@ class User{
     }
 
     static renderLoggedInPage(){
-        console.log(localStorage.getItem('loggedIn'));
+
         let container = document.getElementsByClassName('container')[0];
-        container.innerHTML = '',
-        User.header();
+        container.innerHTML = ''
 
-        fetch(`http://localhost:3000/users/${loggedIn.id}/budgets`) 
-        .then(resp => resp.json())
-        .then(object => {
-                listBudgets(object);
-        })
+        // fetch(`http://localhost:3000/users/${loggedIn.id}/budgets`, configObj)
+        // .then(resp => resp.json())
+        // .then(object => {
+        //     debugger
+        // })
+        
+        // budgetService.getBudgets()
+        // Budget.addBudget()
 
     }
 
-    static renderLoggedOutPage() {
-        container.innerHTML = '';
-        createSignInForm();
-        header.style.visibility = 'hidden';
-    }
+    // static renderLoggedOutPage() {
+    //     container.innerHTML = '';
+    //     createSignInForm();
+    //     header.style.visibility = 'hidden';
+    // }
 
-    static header(){
-        console.log('you are inside header')
-        debugger
-        let create = document.getElementsByClassName('create-budget');
-        create = Array.from(create);
-        let createBudgetDiv = create.find(node => node.nodeName === 'DIV')
-        if (createBudgetDiv) {
-            createBudgetDiv.innerHTML = '';
-        } else {
-            createBudgetDiv = document.createElement('div');
-            createBudgetDiv.setAttribute('class', 'create-budget');
-            createBudgetDiv.setAttribute('data-color', currentColor);
-        }
-        let divOne = document.createElement('div');
-        divOne.setAttribute('class', 'create-and-sort');
-        let addBudget = document.createElement('button');
-        addBudget.setAttribute('class', 'create-budget button');
-        addBudget.innerText = 'Create Budget';
-        addBudget.addEventListener('click', function(event) {
-            addBudget.style.display = 'none';
-            renderBudgetForm();
-        })
-        let divTwo = document.createElement('div');
-        let logOut = document.createElement('button');
-        logOut.setAttribute('class', 'logout button');
-        logOut.innerText = 'Log Out';
-        logOut.addEventListener('click', function(event) {
-            event.preventDefault();
-            renderLoggedOutPage();
-            loggedIn = null;
-        })
-        divOne.appendChild(addBudget);
-        divTwo.appendChild(logOut);
-        createBudgetDiv.appendChild(divOne);
-        createBudgetDiv.appendChild(divTwo);
-        container.prepend(createBudgetDiv);
-    }
+
 }      
         
