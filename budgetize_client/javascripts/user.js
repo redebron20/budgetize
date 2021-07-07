@@ -1,28 +1,27 @@
 class User{
 
-    constructor(id, username, email){
+    constructor(id, email){
         this.id = id
-        this.username = username
         this.email = email
     }
 
-static renderLogInForm() {
-    let container = document.getElementsByClassName('container')[0];
+    static renderLogInForm() {
+        let container = document.getElementsByClassName('container')[0];
 
-    container.innerHTML += `
-    <div class="log-in">
-        <form class="login-form">
-            <h3>Log In:</h3>
-            <div class='wrapper'>
-                Username: <input type="text" id="username" name="username"/><br>
-                Password: <input type="password" id="password" name="password" /><br>
-                <div class='centered-button'>
-                    <input type="submit" value="Log In" class='button' /> 
-                    or <button class="sign-up-button">Sign Up</button>
+        container.innerHTML += `
+        <div class="log-in">
+            <form class="login-form">
+                <h3>Log In:</h3>
+                <div class='wrapper'>
+                    Email: <input type="text" id="email" name="email"/><br>
+                    Password: <input type="password" id="password" name="password" /><br>
+                    <div class='centered-button'>
+                        <input type="submit" value="Log In" class='button' /> 
+                        or <button class="sign-up-button">Sign Up</button>
+                    </div>
                 </div>
-            </div>
-        </form>
-    </div>`
+            </form>
+        </div>`
 
     let logIn = document.getElementsByClassName('log-in')[0];
     let input = document.getElementsByTagName('input');
@@ -36,7 +35,7 @@ static renderLogInForm() {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
-            body: JSON.stringify({ username: input[0].value, password: input[1].value })
+            body: JSON.stringify({ email: input[0].value, password: input[1].value })
         }
 
         if (input[0].value !== "") { 
@@ -52,7 +51,7 @@ static renderLogInForm() {
                 } else {
                     loggedIn = object; 
                     localStorage.loggedIn = object.id;
-                    // renderLoggedInPage();
+                    User.renderLoggedInPage();
                 }
             })
             .catch(function(error) {
@@ -65,28 +64,26 @@ static renderLogInForm() {
         event.preventDefault();
         container.innerHTML = '';
         User.renderSignUpForm();
-    })
-        
+    })      
 }
 
-static renderSignUpForm() {
-    let container = document.getElementsByClassName('container')[0];
-    container.insertAdjacentHTML('afterbegin', `
-        <div class="sign-up">
-            <form id="signup-form">
-            <h3>Sign Up:</h3>
-                <div class='wrapper'>
-                    Email: <input type="text" id="email" name="email"/><br>
-                    Username: <input type="text" id="username" name="username"/><br>
-                    Password: <input type="password" id="password" name="password" /><br>
-                    <div class='centered-button'>
-                        <input type="submit" value="Sign Up" class='button' /> 
-                        or <button class="log-in-button">Log In</button>
+    static renderSignUpForm() {
+        let container = document.getElementsByClassName('container')[0];
+        container.insertAdjacentHTML('afterbegin', `
+            <div class="sign-up">
+                <form id="signup-form">
+                <h3>Sign Up:</h3>
+                    <div class='wrapper'>
+                        Email: <input type="text" id="email" name="email"/><br>
+                        Password: <input type="password" id="password" name="password" /><br>
+                        <div class='centered-button'>
+                            <input type="submit" value="Sign Up" class='button' /> 
+                            or <button class="log-in-button">Log In</button>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
-    `)
+                </form>
+            </div>
+        `)
 
     let signUp = document.getElementsByClassName('sign-up')[0];
     let input = document.getElementsByTagName('input');
@@ -100,7 +97,7 @@ static renderSignUpForm() {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
-            body: JSON.stringify({ email: input[0].value, username: input[1].value, password: input[2].value })
+            body: JSON.stringify({ email: input[0].value, password: input[1].value })
         }
 
         if (input[0].value !== "") { 
@@ -109,7 +106,6 @@ static renderSignUpForm() {
                 return response.json();
             })
             .then(function(object) {
-                debugger
                 if (object.errors) {
                     let ul = document.createElement('ul');
                     object.errors.map( (error) => { 
@@ -121,7 +117,7 @@ static renderSignUpForm() {
                 } else {
                     loggedIn = object; 
                     localStorage.loggedIn = object.id;
-                    // renderLoggedInPage();
+                    User.renderLoggedInPage();
                 }
             })
             .catch(function(error) {
@@ -130,11 +126,24 @@ static renderSignUpForm() {
         }
     })
 
-    logIn.addEventListener('click', function(event) {
-        event.preventDefault();
+        logIn.addEventListener('click', function(event) {
+            event.preventDefault();
+            container.innerHTML = '';
+            User.renderLogInForm();
+        })
+    }
+
+    static renderLoggedInPage(){
+        let container = document.getElementsByClassName('container')[0];
+        container.innerHTML = '',
+        console.log(`Welcome Back, user!`)
+
+    }
+
+    static renderLoggedOutPage() {
         container.innerHTML = '';
-        User.renderLogInForm();
-    })
-}
+        createSignInForm();
+        header.style.visibility = 'hidden';
+    }
 }      
         
