@@ -15,33 +15,13 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    @user = User.new(user_params)
+    @user = User.new(:email => params[:email], :password => params[:password])
 
     if @user.save
       render json: @user, status: :created, location: @user
     else
       render json: @user.errors, status: :unprocessable_entity
     end
-  end
-
-  def login
-    @user = User.find_by(email: params[email])
-
-  end
-
-  # PATCH/PUT /users/1
-  def update
-    if @user.update(user_params)
-      render json: @user
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /users/1
-  def destroy
-    @user.destroy
-    render json: {message: 'User successfully deleted.'}
   end
 
   private
@@ -52,6 +32,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.permit(:email, :username, :password)
+      params.permit(:email, :password)
     end
 end
