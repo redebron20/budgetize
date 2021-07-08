@@ -19,21 +19,23 @@ class App {
     
     submitBudgetForm(){
         const budgetAmount = this.budgetInput.value;
-
-        const configObj = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body:JSON.stringify(budgetAmount)
+        const bodyData = {
+            amount: budgetAmount,
+            user_id: 1,
+            budget_id: 1
         }
-        
-        fetch(`http://localhost:3000/users/${loggedIn.id}/budgets`, configObj)
-        .then(resp => resp.json())
-        .then(budget => {
-            // const b = new Budget(budget)
-            //     b.appendOnDOM()
-        })
+          
+        fetch("http://localhost:3000/budgets", {
+              method: "POST",
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify(bodyData)
+            })
+            .then(response => response.json())
+            .then(json => {
+                debugger
+                localStorage.setItem('jwt_token', json.jwt)
+                User.renderUserProfile()
+            })
 
         if(budgetAmount ==='' || budgetAmount < 0){
             this.budgetFeedback.classList.add('showItem')
@@ -47,11 +49,27 @@ class App {
             this.budgetAmount.textContent = budgetAmount;
             //this.budgetTitle.value = '';
             this.budgetInput.value = '';
-            this.showBalance();
+            this.showBalanceTotal();
         }
     }
 
-    showBalance(){
+    // updateBudget(element){
+    //     let id = parseInt(element.dataset.id);
+    //     let parent = element.parentElement.parentElement.parentElement;
+    //     this.expenseList.removeChild(parent);
+    //     let expense = this.itemList.filter(function(item){
+    //         return item.id === id;
+    //     })
+    //     this.expenseInput.value = expense[0].title;
+    //     this.amountInput.value = expense[0].amount;
+    //     let tempList = this.itemList.filter(function(item){
+    //         return item.id !== id;
+    //     })
+    //     this.itemList = tempList;
+    //     this.showBalanceTotal()
+    // }
+
+    showBalanceTotal(){
         const expense = this.totalExpense();
         const balanceTotal = parseInt(this.budgetAmount.textContent) - expense;
         this.balanceAmount.textContent = balanceTotal;
@@ -95,7 +113,7 @@ class App {
             this.itemID++;
             this.itemList.push(expense);
             this.addExpense(expense);
-            this.showBalance();
+            this.showBalanceTotal();
         }
     }
 
@@ -107,14 +125,14 @@ class App {
                 <h6 class="expense-title mb-0 text-uppercase list-item">- ${expense.title}</h6>
                 <h5 class="expense-amount mb-0 list-item">${expense.amount}</h5>
                 <div class="expense-icons list-item">
-                <a href="#" class="edit-icon mx-2" data-id="${expense.id}">
-                <i class="fas fa-edit"></i>
-                </a>
-                <a href="#" class="delete-icon" data-id="${expense.id}">
-                <i class="fas fa-trash"></i>
-                </a>
+                    <a href="#" class="edit-icon mx-2" data-id="${expense.id}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="#" class="delete-icon" data-id="${expense.id}">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
             </div>
-        </div>
         `;
         this.expenseList.appendChild(div);
     }
@@ -133,6 +151,10 @@ class App {
 
     editExpense(element){
         let id = parseInt(element.dataset.id);
+        console.log(element)
+        console.log(element.parentElement)
+        console.log(element.parentElement.parentElement)
+        console.log(element.parentElement.parentElement.parentElement)
         let parent = element.parentElement.parentElement.parentElement;
         this.expenseList.removeChild(parent);
         let expense = this.itemList.filter(function(item){
@@ -144,7 +166,7 @@ class App {
             return item.id !== id;
         })
         this.itemList = tempList;
-        this.showBalance()
+        this.showBalanceTotal()
     }
 
     deleteExpense(element){
@@ -155,9 +177,9 @@ class App {
             return item.id !== id;
         })
         this.itemList = tempList;
-        this.showBalance()
+        this.showBalanceTotal()
     }
-  }
+}
 
 function addEventListeners(){
     const budgetForm = document.getElementById('budget-form')
@@ -192,8 +214,9 @@ document.addEventListener('DOMContentLoaded', () =>{
     console.log("DOM HAS LOADED!!!");
     User.renderLogInForm();
     addEventListeners();
+
 })
 
-const base_url = "http://127.0.0.1:3000"
-const budgetService = new BudgetService(base_url)
+// const base_url = "http://127.0.0.1:3000"
+// const budgetService = new BudgetService(base_url)
 

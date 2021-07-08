@@ -4,6 +4,9 @@ Rails.application.routes.draw do
       resources :expenses
     end 
   end 
+  
+  resources :budgets
+  resources :expenses
 
   post '/login', to: 'sessions#create'
   get '/profile', to: 'users#profile'

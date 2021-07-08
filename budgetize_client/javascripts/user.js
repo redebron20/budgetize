@@ -35,7 +35,8 @@ class User{
             password: input[1].value
             }
         }
-          
+
+        if (input[0].value !== "") { 
             fetch("http://localhost:3000/login", {
               method: "POST",
               headers: {"Content-Type": "application/json"},
@@ -43,9 +44,25 @@ class User{
             })
             .then(response => response.json())
             .then(json => {
-                localStorage.setItem('jwt_token', json.jwt)
-                User.renderUserProfile()
+                if (json.errors) {
+                    let ul = document.createElement('ul');
+                    object.errors.map( (error) => { 
+                        let li = document.createElement('li');
+                        li.innerText = error;
+                        ul.appendChild(li);
+                    })
+                    signUp.prepend(ul);
+                } else {
+                    localStorage.setItem('token', json.jwt)
+                    User.renderUserProfile();
+                    logIn.remove()
+                }
             })
+    
+            .catch(error => {
+                container.insertAdjacentHTML('beforebegin', `<p>Something went wrong. Please try again</p>`)
+            })
+        }      
     })
 
     signUp.addEventListener('click', function(event) {
@@ -83,7 +100,7 @@ class User{
             email: input[0].value, 
             password: input[1].value
           }
-
+          console.log(user)
         fetch('http://localhost:3000/users', {
             method: "POST",
             headers: {
@@ -91,13 +108,24 @@ class User{
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(user)
-          })
-          .then(resp => resp.json())
-          .then(user => {
-            new User(user.id, user.email, user.password)
-            
+            })
+            .then(resp => resp.json())
+            .then(user => {
+                localStorage.setItem('token', user.jwt)
+                let u = new User(user.user.id, user.user.email)
+                // const budget = new Budget(u.budget)
+                
+                // user.expenses.forEach(expense => {
+                //     new Expense(expense)
+                // })
+                
+                User.renderUserProfile();
+                signUp.remove();
+                
+        }) 
+        .catch(error => {
+            container.insertAdjacentHTML('beforebegin', `<p>Something went wrong. Please try again</p>`)
         })
-        
     })
 
         logIn.addEventListener('click', function(event) {
@@ -109,16 +137,16 @@ class User{
 
     static renderUserProfile() {
         console.log('Welcome Back, User!')
-        console.log(localStorage.getItem('jwt_token'));
+        console.log(localStorage.getItem('token'));
         fetch('http://localhost:3000/profile', {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('jwt_token')}`
+            Authorization: `Bearer ${localStorage.getItem('token')}`
           }
         })
         .then(response => response.json())
         .then(json => {
-            let user = new User(json.user.id, json.user.email)
+            let user = new User
             let container = document.getElementsByClassName('container')[0];
          
   
@@ -130,9 +158,6 @@ class User{
             h1.setAttribute("style", "text-shadow: 2px 2px #00000044")
             h1.innerText = `Welcome back!`
             card.appendChild(h1)
-    
-            let logIn = document.getElementsByClassName('log-in')[0];
-            logIn.remove()
 
             let logOut = document.createElement('button');
             logOut.setAttribute('class', 'logout button');

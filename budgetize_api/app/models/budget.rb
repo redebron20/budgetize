@@ -2,7 +2,7 @@ class Budget < ApplicationRecord
     belongs_to :user
     has_many :expenses, :dependent => :destroy
 
-    validates :title, presence: true, uniqueness: true
+    validates :amount, presence: true, uniqueness: true
 
     # def update_balance(transaction)
     #     if transaction[:kind].downcase == "income" 
