@@ -16,7 +16,7 @@ class BudgetService{
 
     createBudget(){
         const budget = {
-            title: document.getElementById('title').value,
+            name: document.getElementById('name').value,
             user_id: 1
         }
 

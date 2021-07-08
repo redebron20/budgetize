@@ -18,23 +18,17 @@ class App {
     }
     
     submitBudgetForm(){
-        const budgetAmount = this.budgetInput.value;
-        const bodyData = {
-            amount: budgetAmount,
-            user_id: 1,
-            budget_id: 1
-        }
+        let budgetAmount = this.budgetInput.value;
           
-        fetch("http://localhost:3000/budgets", {
+        fetch("http://localhost:3000/users/${this.user_id}/budgets", {
               method: "POST",
               headers: {"Content-Type": "application/json"},
-              body: JSON.stringify(bodyData)
+              body: JSON.stringify(budgetAmount)
             })
             .then(response => response.json())
             .then(json => {
                 debugger
-                localStorage.setItem('jwt_token', json.jwt)
-                User.renderUserProfile()
+                let newBudget = new Budget(json)
             })
 
         if(budgetAmount ==='' || budgetAmount < 0){
@@ -52,22 +46,6 @@ class App {
             this.showBalanceTotal();
         }
     }
-
-    // updateBudget(element){
-    //     let id = parseInt(element.dataset.id);
-    //     let parent = element.parentElement.parentElement.parentElement;
-    //     this.expenseList.removeChild(parent);
-    //     let expense = this.itemList.filter(function(item){
-    //         return item.id === id;
-    //     })
-    //     this.expenseInput.value = expense[0].title;
-    //     this.amountInput.value = expense[0].amount;
-    //     let tempList = this.itemList.filter(function(item){
-    //         return item.id !== id;
-    //     })
-    //     this.itemList = tempList;
-    //     this.showBalanceTotal()
-    // }
 
     showBalanceTotal(){
         const expense = this.totalExpense();
@@ -218,5 +196,5 @@ document.addEventListener('DOMContentLoaded', () =>{
 })
 
 // const base_url = "http://127.0.0.1:3000"
-// const budgetService = new BudgetService(base_url)
+// const budget = new Budget(base_url)
 

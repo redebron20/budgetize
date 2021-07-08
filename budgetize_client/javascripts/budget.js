@@ -17,24 +17,24 @@ class Budget{
         this.element.id = `budget-${this.id}`
         this.element.addEventListener('click', this.handleClick)
 
-        // Budget.all.push(this)
+        Budget.all.push(this)
     }
 
-    // static addBudget(){
-    //     Budget.budgetForm.innerHTML += `
-    //     <form id="budget-form" class=" budget-form">
-    //                 <h5 class="text-capitalize">enter your budget</h5>
-    //                 <div class="form-group">
-    //                     Title:<input type="text" class="form-control budget-title" id="budget-title">
-    //                    </div>
-    //                 <div class="form-group">
-    //                     Amount:<input type="number" class="form-control budget-input" id="budget-input">
-    //                 </div>
-    //                 <!-- submit button -->
-    //                 <button type="submit" class="btn text-capitalize budget-submit" id="budget-submit">calculate</button>
-    //     </form>
-    //     `
-    // }
+    static addBudget(){
+        Budget.budgetForm.innerHTML += `
+        <form id="budget-form" class=" budget-form">
+                    <h5 class="text-capitalize">enter your budget</h5>
+                    <div class="form-group">
+                        Title:<input type="text" class="form-control budget-title" id="budget-title">
+                       </div>
+                    <div class="form-group">
+                        Amount:<input type="number" class="form-control budget-input" id="budget-input">
+                    </div>
+                    <!-- submit button -->
+                    <button type="submit" class="btn text-capitalize budget-submit" id="budget-submit">calculate</button>
+        </form>
+        `
+    }
 
     handleClick = () => {
         if (event.target.innerText === 'Delete'){

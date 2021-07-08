@@ -112,8 +112,9 @@ class User{
             .then(resp => resp.json())
             .then(user => {
                 localStorage.setItem('token', user.jwt)
+                debugger
                 let u = new User(user.user.id, user.user.email)
-                // const budget = new Budget(u.budget)
+                const budget = new Budget(u.budget)
                 
                 // user.expenses.forEach(expense => {
                 //     new Expense(expense)
@@ -137,7 +138,6 @@ class User{
 
     static renderUserProfile() {
         console.log('Welcome Back, User!')
-        console.log(localStorage.getItem('token'));
         fetch('http://localhost:3000/profile', {
           method: 'GET',
           headers: {
@@ -146,7 +146,9 @@ class User{
         })
         .then(response => response.json())
         .then(json => {
-            let user = new User
+            let user = new User(json.user.id, json.user.email)
+            console.log(user.id)
+            console.log(user.email)
             let container = document.getElementsByClassName('container')[0];
          
   
@@ -156,8 +158,13 @@ class User{
         
             let h1 = document.createElement('h1')
             h1.setAttribute("style", "text-shadow: 2px 2px #00000044")
-            h1.innerText = `Welcome back!`
+            h1.innerText = `Welcome back, User No. ${user.id}!`
             card.appendChild(h1)
+
+            let h5 = document.createElement('h5')
+            h5.setAttribute("style", "text-shadow: 1px 1px #00000044")
+            h5.innerText = `Your email: ${user.email}`
+            card.appendChild(h5)
 
             let logOut = document.createElement('button');
             logOut.setAttribute('class', 'logout button');

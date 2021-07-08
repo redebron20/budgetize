@@ -1,5 +1,5 @@
 class Expense {
-    constructor(expense_id, budget_id, title, amount) {
+    constructor() {
         this.id = expense_id;
         this.budget_id = budget_id;
         this.title = title;
