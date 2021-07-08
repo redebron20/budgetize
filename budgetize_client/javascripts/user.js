@@ -110,16 +110,10 @@ class User{
             body: JSON.stringify(user)
             })
             .then(resp => resp.json())
-            .then(user => {
+            .then(json => {
                 localStorage.setItem('token', user.jwt)
-                debugger
-                let u = new User(user.user.id, user.user.email)
-                const budget = new Budget(u.budget)
-                
-                // user.expenses.forEach(expense => {
-                //     new Expense(expense)
-                // })
-                
+                new User(json.user.id, json.user.email)
+                new Budget(budget_id = 1, user_id = json.user.id, amount = 0)
                 User.renderUserProfile();
                 signUp.remove();
                 
@@ -151,7 +145,6 @@ class User{
             console.log(user.email)
             let container = document.getElementsByClassName('container')[0];
          
-  
             let card = document.createElement('div')
             card.setAttribute("id", `user-id-${user.id}`)
             container.appendChild(card)

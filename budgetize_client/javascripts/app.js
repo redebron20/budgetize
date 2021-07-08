@@ -19,17 +19,6 @@ class App {
     
     submitBudgetForm(){
         let budgetAmount = this.budgetInput.value;
-          
-        fetch("http://localhost:3000/users/${this.user_id}/budgets", {
-              method: "POST",
-              headers: {"Content-Type": "application/json"},
-              body: JSON.stringify(budgetAmount)
-            })
-            .then(response => response.json())
-            .then(json => {
-                debugger
-                let newBudget = new Budget(json)
-            })
 
         if(budgetAmount ==='' || budgetAmount < 0){
             this.budgetFeedback.classList.add('showItem')
@@ -40,6 +29,16 @@ class App {
             }, 5000);
         }
         else{
+            // fetch("http://localhost:3000/users/${this.user_id}/budgets", {
+            //   method: "POST",
+            //   headers: {"Content-Type": "application/json"},
+            //   body: JSON.stringify(budgetAmount)
+            // })
+            // .then(response => response.json())
+            // .then(json => {
+            //     debugger
+            //     let newBudget = new Budget(json)
+            // })
             this.budgetAmount.textContent = budgetAmount;
             //this.budgetTitle.value = '';
             this.budgetInput.value = '';

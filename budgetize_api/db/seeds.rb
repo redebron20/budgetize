@@ -6,7 +6,9 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-# user = User.create(username: "yourhighness", email: "yourhighness@ymail.com", password_digest: "yourhighness")
+# user1 = User.create(email: "red2@wow.com", password_digest: "redred")
 
-# budget = Budget.create(name: "General Budget")
-# user.budgets << budget
+# budget1 = Budget.create(amount: 2000)
+# user1.budget = budget1
+
+# expense1 = Expense.create(title: "grocery", amount: 90)
