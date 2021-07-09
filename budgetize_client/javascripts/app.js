@@ -20,7 +20,8 @@ class App {
     
     submitBudgetForm(){
         let budgetAmount = this.budgetInput.value;
-        const data = {
+
+        const budgetData = {
             amount: budgetAmount,
             user_id: user_id
         }
@@ -37,11 +38,11 @@ class App {
             fetch(`${baseUrl}/users/${user_id}/budgets`, {
               method: "POST",
               headers: {"Content-Type": "application/json"},
-              body: JSON.stringify(data)
+              body: JSON.stringify(budgetData)
             })
             .then(response => response.json())
             .then(json => {
-                let budget = new Budget(json)
+                new Budget(json)
             })
             this.budget.textContent = budgetAmount;
             //this.budgetTitle.value = '';
@@ -86,14 +87,24 @@ class App {
             this.expenseInput.value = '';
             this.amountInput.value = '';
 
-            let expense = {
+            let expenseData = {
                 id:this.itemID,
                 title:expenseValue,
                 amount:amount,
             }
+
+            fetch(`${baseUrl}/expenses`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(expenseData)
+              })
+              .then(response => response.json())
+              .then(json => {
+                 new Expense(json)
+              })
             this.itemID++;
-            this.itemList.push(expense);
-            this.addExpense(expense);
+            this.itemList.push(expenseData);
+            this.addExpense(expenseData);
             this.showBalanceTotal();
         }
     }

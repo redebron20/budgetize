@@ -4,7 +4,7 @@ class ExpensesController < ApplicationController
 
   # GET /expenses
   def index
-    @expenses = Expense.ApplicationController
+    @expenses = Expense.all
 
     render json: @expenses
   end
