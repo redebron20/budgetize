@@ -5,8 +5,8 @@ class App {
       this.budgetForm = document.getElementById("budget-form");
       //this.budgetTitle = document.getElementById("budget-title");
       this.budgetInput = document.getElementById("budget-input");
-      this.budgetAmount = document.getElementById("budget-amount");
-      this.expenseAmount = document.getElementById("expense-amount");
+      this.budget = document.getElementById("budget-amount");
+      this.expense = document.getElementById("expense-amount");
       this.balance = document.getElementById("balance");
       this.balanceAmount = document.getElementById("balance-amount");
       this.expenseForm = document.getElementById("expense-form");
@@ -29,17 +29,17 @@ class App {
             }, 5000);
         }
         else{
-            // fetch("http://localhost:3000/users/${this.user_id}/budgets", {
-            //   method: "POST",
-            //   headers: {"Content-Type": "application/json"},
-            //   body: JSON.stringify(budgetAmount)
-            // })
-            // .then(response => response.json())
-            // .then(json => {
-            //     debugger
-            //     let newBudget = new Budget(json)
-            // })
-            this.budgetAmount.textContent = budgetAmount;
+            fetch(budget_URL, {
+              method: "POST",
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify(budgetAmount)
+            })
+            .then(response => response.json())
+            .then(json => {
+                debugger
+                console.log(json)
+            })
+            this.budget.textContent = budgetAmount;
             //this.budgetTitle.value = '';
             this.budgetInput.value = '';
             this.showBalanceTotal();
@@ -48,7 +48,7 @@ class App {
 
     showBalanceTotal(){
         const expense = this.totalExpense();
-        const balanceTotal = parseInt(this.budgetAmount.textContent) - expense;
+        const balanceTotal = parseInt(this.budget.textContent) - expense;
         this.balanceAmount.textContent = balanceTotal;
         if(balanceTotal < 0){
             this.balance.classList.remove('showGreen', 'showBlack');
@@ -74,7 +74,7 @@ class App {
             this.expenseFeedback.innerHTML = `<p>values cannot be negative or empty</p>`
             const self = this;
             setTimeout(function(){
-                self.expenseFeedback.classList.remove('showItem');           
+                this.expenseFeedback.classList.remove('showItem');           
             }, 5000);
         }
         else{
@@ -122,7 +122,7 @@ class App {
                 return accumulator;
             },0);
         }
-        this.expenseAmount.textContent = total;
+        this.expense.textContent = total;
         return total;
     }
 
@@ -206,3 +206,6 @@ document.addEventListener('DOMContentLoaded', () =>{
 // const base_url = "http://127.0.0.1:3000"
 // const budget = new Budget(base_url)
 
+let user_id
+let budget_id
+let budget_URL = `http://localhost:3000/users/${user_id}/budgets/${budget_id}`

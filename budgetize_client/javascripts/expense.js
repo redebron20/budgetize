@@ -1,9 +1,14 @@
 class Expense {
-    constructor() {
-        this.id = expense_id;
-        this.budget_id = budget_id;
+
+    static all = []
+
+    constructor(title, amount, budget, id) { 
         this.title = title;
         this.amount = amount;
+        this.budget_id = budget.id;
+        this.id = id;
+
+        Expense.all.push(this)
     }
 
     // addExpense(expense){

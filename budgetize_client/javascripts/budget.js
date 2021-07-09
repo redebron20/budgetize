@@ -5,17 +5,17 @@ class Budget{
     static budgetForm = document.getElementById("budget-form")
     static budgetFeedback = document.querySelector(".budget-feedback")
 
-    constructor(){
-        this.id = budget_id
-        this.amount = amount
+    constructor({budget, expense, expenses = []}){
+        this.id = id
+        this.amount = budget
         this.expense = expense
         this.balance = balance
         this.user_id = user_id
 
-        this.element = document.createElement("li")
-        this.element.dataset.id = this.id
-        this.element.id = `budget-${this.id}`
-        this.element.addEventListener('click', this.handleClick)
+        // this.element = document.createElement("li")
+        // this.element.dataset.id = this.id
+        // this.element.id = `budget-${this.id}`
+        // this.element.addEventListener('click', this.handleClick)
 
     }
 

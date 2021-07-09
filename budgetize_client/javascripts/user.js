@@ -112,9 +112,12 @@ class User{
             .then(resp => resp.json())
             .then(json => {
                 localStorage.setItem('token', json.jwt)
-                
-                // new User(json.user.id, json.user.email)
-                // new Budget(budget_id = 1, user_id = json.user.id, amount = 0)
+                let user = new User(json.user.id, json.user.email)
+                let user_id = user.id
+                debugger
+                let budget = new Budget(user_id = user.id, id = 1)
+                let budget_id = budget.id
+                debugger
                 
                 User.renderUserProfile();
                 signUp.remove();
