@@ -4,9 +4,9 @@ class BudgetsController < ApplicationController
 
   # GET /budgets
   def index
-    @budgets = Budget.all
+    @budget = Budget.last
 
-    render json: @budgets
+    render json: @budget
   end
 
   # GET /budgets/1

@@ -42,7 +42,8 @@ class App {
             })
             .then(response => response.json())
             .then(json => {
-                new Budget(json)
+                let budgetObj = new Budget(json.amount, json.id, json.user_id)
+                budget_id = budgetObj.id
             })
             this.budget.textContent = budgetAmount;
             //this.budgetTitle.value = '';
@@ -93,14 +94,20 @@ class App {
                 amount:amount,
             }
 
-            fetch(`${baseUrl}/expenses`, {
+            let data = {
+                title:expenseValue,
+                amount:amount,
+                budget_id             
+            }
+
+            fetch(`${baseUrl}/users/${user_id}/budgets/${budget_id}/expenses`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(expenseData)
-              })
-              .then(response => response.json())
-              .then(json => {
-                 new Expense(json)
+                body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(json => {
+                    let expenseObj = new Expense(json.title, json.amount, json.id, json.budget_id)
               })
             this.itemID++;
             this.itemList.push(expenseData);

@@ -55,6 +55,8 @@ class User{
                 } else {
                     localStorage.setItem('token', json.jwt)
                     user_id = json.user.id
+                    // debugger
+                    // budget_id = json.user.budget_id
                     User.renderUserProfile();
                     logIn.remove();
                 }
@@ -168,7 +170,7 @@ class User{
 
             })
             container.appendChild(logOut)
-
+            
             Budget.fetchBudget();
           })
         }

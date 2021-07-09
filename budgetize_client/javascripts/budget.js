@@ -12,12 +12,13 @@ class Budget{
         fetch(`${baseUrl}/users/${user_id}/budgets`)
         .then(resp => resp.json())
         .then(json => {
-            let lastObj =  json[json.length -1];
-            let budgetObj = new Budget(lastObj.amount, lastObj.id, lastObj.user_id);
+            // let lastObj =  json[json.length -1];
+            // debugger
+            let budgetObj = new Budget(json.amount, json.id, json.user_id);
             budget.textContent = budgetObj.amount;
-            lastObj.expenses.forEach(expense => {
-                new Expense(expense)
-            })
+            // json.expenses.forEach(expense => {
+            //     new Expense(expense)
+            // })
         })
     }
 

@@ -16,5 +16,5 @@ const itemID = () => 0;
 
 const baseUrl = "http://127.0.0.1:3000"
 // const budget = new Budget(base_url)
-
 var user_id;
+var budget_id;
