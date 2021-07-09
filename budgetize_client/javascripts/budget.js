@@ -1,22 +1,23 @@
 class Budget{
 
     static all = []
-    static budgetsContainer = document.getElementById("budgets-container")
-    static budgetForm = document.getElementById("budget-form")
-    static budgetFeedback = document.querySelector(".budget-feedback")
 
-    constructor({budget, expense, expenses = []}){
+    constructor(id, amount, user_id){
         this.id = id
-        this.amount = budget
-        this.expense = expense
-        this.balance = balance
+        this.amount = amount
         this.user_id = user_id
+    }
 
-        // this.element = document.createElement("li")
-        // this.element.dataset.id = this.id
-        // this.element.id = `budget-${this.id}`
-        // this.element.addEventListener('click', this.handleClick)
-
+    static fetchBudget (){
+        fetch(`${baseUrl}/users/${user_id}/budgets`)
+        .then(resp => resp.json())
+        .then(json => {
+            let lastObj =  json[json.length -1]
+            let budget = new Budget(lastObj.amount, lastObj.id, lastObj.user_id)
+            // lastObj.expenses.forEach(expense => {
+            //     new Expense(expense)
+            // })
+        })
     }
 
     // static addBudget(){

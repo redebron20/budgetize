@@ -15,8 +15,6 @@ ActiveRecord::Schema.define(version: 2021_07_06_151458) do
   create_table "budgets", force: :cascade do |t|
     t.string "title"
     t.float "amount", default: 0.0
-    t.float "expense", default: 0.0
-    t.float "balance", default: 0.0
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

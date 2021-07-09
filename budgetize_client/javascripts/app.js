@@ -1,4 +1,5 @@
 class App {
+
     constructor() {
       this.budgetFeedback = document.querySelector(".budget-feedback");
       this.expenseFeedback = document.querySelector(".expense-feedback");
@@ -19,6 +20,10 @@ class App {
     
     submitBudgetForm(){
         let budgetAmount = this.budgetInput.value;
+        const data = {
+            amount: budgetAmount,
+            user_id: user_id
+        }
 
         if(budgetAmount ==='' || budgetAmount < 0){
             this.budgetFeedback.classList.add('showItem')
@@ -29,15 +34,14 @@ class App {
             }, 5000);
         }
         else{
-            fetch(budget_URL, {
+            fetch(`${baseUrl}/users/${user_id}/budgets`, {
               method: "POST",
               headers: {"Content-Type": "application/json"},
-              body: JSON.stringify(budgetAmount)
+              body: JSON.stringify(data)
             })
             .then(response => response.json())
             .then(json => {
-                debugger
-                console.log(json)
+                let budget = new Budget(json)
             })
             this.budget.textContent = budgetAmount;
             //this.budgetTitle.value = '';
@@ -203,9 +207,3 @@ document.addEventListener('DOMContentLoaded', () =>{
 
 })
 
-// const base_url = "http://127.0.0.1:3000"
-// const budget = new Budget(base_url)
-
-let user_id
-let budget_id
-let budget_URL = `http://localhost:3000/users/${user_id}/budgets/${budget_id}`

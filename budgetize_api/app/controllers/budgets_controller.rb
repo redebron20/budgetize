@@ -1,5 +1,6 @@
 class BudgetsController < ApplicationController
   before_action :set_budget, only: [:show, :update, :destroy]
+  skip_before_action :authorized, only: [:index, :create]
 
   # GET /budgets
   def index
@@ -47,6 +48,6 @@ class BudgetsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def budget_params
-      params.require(:budget).permit(:title, :income, :expense, :balance, :user_id)
+      params.require(:budget).permit(:amount, :user_id)
     end
 end

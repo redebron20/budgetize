@@ -1,9 +1,10 @@
 class ExpensesController < ApplicationController
   before_action :set_expense, only: [:show, :update, :destroy]
+  skip_before_action :authorized, only: [:index, :create]
 
   # GET /expenses
   def index
-    @expenses = Expense.all
+    @expenses = Expense.ApplicationController
 
     render json: @expenses
   end

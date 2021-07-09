@@ -37,7 +37,7 @@ class User{
         }
 
         if (input[0].value !== "") { 
-            fetch("http://localhost:3000/login", {
+            fetch(`${baseUrl}/login`, {
               method: "POST",
               headers: {"Content-Type": "application/json"},
               body: JSON.stringify(bodyData)
@@ -54,8 +54,9 @@ class User{
                     signUp.prepend(ul);
                 } else {
                     localStorage.setItem('token', json.jwt)
+                    user_id = json.user.id
                     User.renderUserProfile();
-                    logIn.remove()
+                    logIn.remove();
                 }
             })
     
@@ -101,7 +102,7 @@ class User{
             password: input[1].value
           }
           console.log(user)
-        fetch('http://localhost:3000/users', {
+        fetch(`${baseUrl}/users`, {
             method: "POST",
             headers: {
               'Accept': 'application/json',
@@ -113,12 +114,7 @@ class User{
             .then(json => {
                 localStorage.setItem('token', json.jwt)
                 let user = new User(json.user.id, json.user.email)
-                let user_id = user.id
-                debugger
-                let budget = new Budget(user_id = user.id, id = 1)
-                let budget_id = budget.id
-                debugger
-                
+                user_id = user.id
                 User.renderUserProfile();
                 signUp.remove();
                 
@@ -136,8 +132,7 @@ class User{
     }
 
     static renderUserProfile() {
-        console.log('Welcome Back, User!')
-        fetch('http://localhost:3000/profile', {
+        fetch(`${baseUrl}/profile`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -173,7 +168,8 @@ class User{
 
             })
             container.appendChild(logOut)
-         
+
+            Budget.fetchBudget();
           })
         }
 
